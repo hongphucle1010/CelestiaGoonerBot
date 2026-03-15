@@ -15,7 +15,7 @@ import type { Command } from "./types/Command";
 const token = process.env.DISCORD_TOKEN;
 const deepseekApiKey = process.env.DEEPSEEK_API_KEY;
 const deepseekModel = process.env.DEEPSEEK_MODEL ?? "deepseek-chat";
-const instructionPath = path.join(process.cwd(), "GeminiInstruction.txt");
+const instructionPath = path.join(process.cwd(), "DeepSeekInstruction.txt");
 const systemInstruction = fs.existsSync(instructionPath)
   ? fs.readFileSync(instructionPath, "utf8").trim()
   : "";
@@ -45,7 +45,7 @@ async function generateDeepSeekReply(messageContent: string, userName: string, g
   }
 
   if (!systemInstruction) {
-    return "I cannot improvise properly yet. `GeminiInstruction.txt` is missing.";
+    return "I cannot improvise properly yet. `DeepSeekInstruction.txt` is missing.";
   }
 
   const prompt = [

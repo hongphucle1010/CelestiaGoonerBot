@@ -8,7 +8,7 @@ RUN npm ci
 COPY tsconfig.json ./
 COPY src ./src
 COPY scripts ./scripts
-COPY GeminiInstruction.txt ./GeminiInstruction.txt
+COPY DeepSeekInstruction.txt ./DeepSeekInstruction.txt
 
 RUN npm run build
 
@@ -21,6 +21,6 @@ COPY package*.json ./
 RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/GeminiInstruction.txt ./GeminiInstruction.txt
+COPY --from=builder /app/DeepSeekInstruction.txt ./DeepSeekInstruction.txt
 
 CMD ["npm", "start"]

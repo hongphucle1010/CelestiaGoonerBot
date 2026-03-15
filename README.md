@@ -67,7 +67,7 @@ docker compose run --rm bot npm run deploy:commands
 
 Notes:
 - `docker-compose.yml` reads environment variables from your local `.env`
-- `GeminiInstruction.txt` is copied into the image and used at runtime
+- `DeepSeekInstruction.txt` is copied into the image and used at runtime
 - The image builds TypeScript first, then runs the compiled bot in a smaller production stage
 
 ## DeepSeek Chat Flow
@@ -75,7 +75,7 @@ Notes:
 1. Say `Celestia chan~`
 2. The bot replies `haiii`
 3. Your next message within 60 seconds is sent to DeepSeek
-4. DeepSeek responds using the persona/context from `GeminiInstruction.txt`
+4. DeepSeek responds using the persona/context from `DeepSeekInstruction.txt`
 
 ## Build
 
