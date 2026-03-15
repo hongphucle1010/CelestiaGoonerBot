@@ -39,6 +39,37 @@ npm run deploy:commands
 npm run dev
 ```
 
+## Docker
+
+Build and run with Docker Compose:
+
+```bash
+docker compose up --build -d
+```
+
+Stop the container:
+
+```bash
+docker compose down
+```
+
+View logs:
+
+```bash
+docker compose logs -f bot
+```
+
+Deploy slash commands from the container:
+
+```bash
+docker compose run --rm bot npm run deploy:commands
+```
+
+Notes:
+- `docker-compose.yml` reads environment variables from your local `.env`
+- `GeminiInstruction.txt` is copied into the image and used at runtime
+- The image builds TypeScript first, then runs the compiled bot in a smaller production stage
+
 ## DeepSeek Chat Flow
 
 1. Say `Celestia chan~`
