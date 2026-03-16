@@ -72,10 +72,18 @@ Notes:
 
 ## DeepSeek Chat Flow
 
-1. Say `Celestia chan~`
-2. The bot replies `haiii`
-3. Your next message within 60 seconds is sent to DeepSeek
-4. DeepSeek responds using the persona/context from `DeepSeekInstruction.txt`
+You can talk to the bot in any of these ways:
+
+1. Two-step flow:
+   - Say `Celestia chan~`
+   - The bot replies `haiii`
+   - Your next message within 60 seconds is sent to DeepSeek
+2. One-message summon:
+   - `Celestia chan~, tell me something funny`
+3. Mention the bot directly:
+   - `@CelestiaGooner tell me something funny`
+
+DeepSeek responds using the persona/context from `DeepSeekInstruction.txt`.
 
 ## Build
 

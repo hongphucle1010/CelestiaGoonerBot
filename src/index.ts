@@ -38,6 +38,7 @@ const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
   .readdirSync(commandsPath)
   .filter((file) => [".js", ".ts"].includes(path.extname(file)) && !file.endsWith(".d.ts"));
+const summonPrefix = "celestia chan~";
 
 async function generateDeepSeekReply(messageContent: string, userName: string, guildName?: string) {
   if (!deepseekApiKey) {
@@ -106,6 +107,24 @@ async function generateDeepSeekReply(messageContent: string, userName: string, g
   return reply;
 }
 
+async function replyWithDeepSeek(message: Parameters<typeof client.on<Events.MessageCreate>>[1] extends (
+  ...args: infer T
+) => unknown
+  ? T[0]
+  : never, content: string) {
+  try {
+    const reply = await generateDeepSeekReply(
+      content,
+      message.member?.displayName ?? message.author.username,
+      message.guild?.name,
+    );
+    await message.reply(reply);
+  } catch (error) {
+    console.error("Error while generating DeepSeek reply:", error);
+    await message.reply("Ara... my brain lagged. Try that again in a sec.");
+  }
+}
+
 for (const file of commandFiles) {
   const filePath = path.join(commandsPath, file);
   const commandModule = require(filePath) as { default?: Command };
@@ -128,11 +147,25 @@ client.on(Events.MessageCreate, async (message) => {
     return;
   }
 
-  const normalizedContent = message.content.trim().toLowerCase();
+  const trimmedContent = message.content.trim();
+  const normalizedContent = trimmedContent.toLowerCase();
   const conversationKey = `${message.channelId}:${message.author.id}`;
   const hasPendingReply = (pendingReplies.get(conversationKey) ?? 0) > Date.now();
+  const mentionPrefix = client.user ? new RegExp(`^<@!?${client.user.id}>\\s*,?\\s*(.+)$`, "i") : null;
+  const mentionMatch = mentionPrefix?.exec(trimmedContent);
+  const summonWithContentMatch = new RegExp(`^${summonPrefix}\\s*,\\s*(.+)$`, "i").exec(trimmedContent);
 
-  if (normalizedContent === "celestia chan~") {
+  if (mentionMatch?.[1]) {
+    await replyWithDeepSeek(message, mentionMatch[1].trim());
+    return;
+  }
+
+  if (summonWithContentMatch?.[1]) {
+    await replyWithDeepSeek(message, summonWithContentMatch[1].trim());
+    return;
+  }
+
+  if (normalizedContent === summonPrefix) {
     pendingReplies.set(conversationKey, Date.now() + 60_000);
     await message.reply("haiii");
     return;
@@ -140,18 +173,7 @@ client.on(Events.MessageCreate, async (message) => {
 
   if (hasPendingReply) {
     pendingReplies.delete(conversationKey);
-
-    try {
-      const reply = await generateDeepSeekReply(
-        message.content.trim(),
-        message.member?.displayName ?? message.author.username,
-        message.guild?.name,
-      );
-      await message.reply(reply);
-    } catch (error) {
-      console.error("Error while generating DeepSeek reply:", error);
-      await message.reply("Ara... my brain lagged. Try that again in a sec.");
-    }
+    await replyWithDeepSeek(message, trimmedContent);
   }
 });
 
