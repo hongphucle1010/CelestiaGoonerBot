@@ -82,10 +82,21 @@ You can talk to the bot in any of these ways:
    - Your next message within 60 seconds is sent to DeepSeek
 2. One-message summon:
    - `Celestia chan~, tell me something funny`
+   - `Celestia chan~ tell me something funny`
+   - simple typos like `Celesia chan~` or `Celetia chan~` still work, but the bot will call out the wrong name
 3. Mention the bot directly:
    - `@CelestiaGooner tell me something funny`
+   - `@CelestiaGooner, tell me something funny`
+   - `@CelestiaGooner, Celestia tell me something funny`
 
 DeepSeek responds using the persona/context from `DeepSeekInstruction.txt`.
+
+The bot can also jump in automatically when a message contains certain trigger words such as `pregnent`, `pregnant`, `pregnat`, `monkey`, `monke`, `onink`, `oink`, `horny`, `seggs`, `gooning`, `hentai`, `boobs`, `dick`, or `cum`.
+
+Those trigger reactions have:
+- a 10-minute cooldown so the bot does not reply too often in the same channel
+- different reaction styles per trigger family
+- simple typo support for trigger words
 
 ## Build
 
