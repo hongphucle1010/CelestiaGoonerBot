@@ -72,6 +72,8 @@ Notes:
 
 ## DeepSeek Chat Flow
 
+The bot keeps up to 30 recent messages per caller, plus up to 10 recent messages from each other caller as shared background context for future DeepSeek replies.
+
 You can talk to the bot in any of these ways:
 
 1. Two-step flow:
