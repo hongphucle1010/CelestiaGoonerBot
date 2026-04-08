@@ -91,7 +91,7 @@ You can talk to the bot in any of these ways:
 
 DeepSeek responds using the persona/context from `DeepSeekInstruction.txt`.
 
-The bot can also jump in automatically when a message contains certain trigger words such as `pregnent`, `pregnant`, `pregnat`, `monkey`, `monke`, `onink`, `oink`, `horny`, `seggs`, `gooning`, `hentai`, `boobs`, `dick`, or `cum`.
+The bot can also jump in automatically when a message contains certain trigger words such as `pregnent`, `pregnant`, `pregnat`, `monkey`, `monke`, `onink`, `oink`, `horny`, `seggs`, `hentai`, `boobs`, `dick`, or `cum`.
 
 Those trigger reactions have:
 - a 10-minute cooldown so the bot does not reply too often in the same channel
@@ -118,7 +118,14 @@ https://discord.com/oauth2/authorize?client_id=CLIENT_ID&scope=bot%20application
 ```text
 src/
   commands/
+  handlers/
   types/
+  config.ts
+  deepseek.ts
+  history.ts
+  badWords.ts
+  summon.ts
+  loadCommands.ts
   index.ts
 scripts/
   deploy-commands.ts
