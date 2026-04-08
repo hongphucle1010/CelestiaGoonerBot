@@ -5,12 +5,20 @@ import type { ConversationMessage } from "./types/chat";
 
 const messageHistory = new Map<string, ConversationMessage[]>();
 
+export function getScopeKeyFromIds(guildId: string | null) {
+  return guildId ?? "dm";
+}
+
+export function getHistoryKeyFromIds(guildId: string | null, userId: string) {
+  return `${getScopeKeyFromIds(guildId)}:${userId}`;
+}
+
 export function getScopeKey(message: Message) {
-  return message.guildId ?? "dm";
+  return getScopeKeyFromIds(message.guildId);
 }
 
 export function getHistoryKey(message: Message) {
-  return `${getScopeKey(message)}:${message.author.id}`;
+  return getHistoryKeyFromIds(message.guildId, message.author.id);
 }
 
 export function appendToHistory(historyKey: string, entry: ConversationMessage) {

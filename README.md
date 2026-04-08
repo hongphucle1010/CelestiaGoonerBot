@@ -6,7 +6,7 @@ A starter Discord bot built with TypeScript and `discord.js`.
 
 - Slash-command based bot setup
 - TypeScript project structure
-- Example commands: `/ping`, `/help`, `/server`, `/user`
+- Example commands: `/ping`, `/help`, `/server`, `/user`, `/celestiacall` (Celestia’s reply is posted in-channel for everyone; only you see the slash “loading” state)
 - Guild command deploy script for fast testing
 - Message-based summon flow powered by DeepSeek
 
