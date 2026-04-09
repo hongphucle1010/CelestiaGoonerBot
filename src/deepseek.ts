@@ -1,11 +1,27 @@
 import { DEEPSEEK_API_KEY, DEEPSEEK_MODEL, systemInstruction } from "./config";
 import type { ConversationMessage } from "./types/chat";
 
-export function formatUserPrompt(messageContent: string, userName: string, guildName?: string) {
-  return [
+export type ReplyMode = "normal" | "styleRewrite";
+
+export function formatUserPrompt(messageContent: string, userName: string, guildName: string | undefined, mode: ReplyMode) {
+  const base = [
     "Stay fully in character and reply with one short Discord-style message.",
     "Do not explain your reasoning.",
     "Keep the response under 2 sentences.",
+  ];
+
+  const modeInstruction =
+    mode === "styleRewrite"
+      ? [
+          "Restate the caller's idea in your own style while preserving the core meaning.",
+          "Do not narrate about the caller (no 'you said', no 'spreading rumors', no meta commentary).",
+          "Do not quote the input verbatim unless it still sounds natural in-character.",
+        ]
+      : [];
+
+  return [
+    ...base,
+    ...modeInstruction,
     "",
     "Discord context:",
     `Server: ${guildName ?? "Direct message"}`,
@@ -20,6 +36,7 @@ export async function generateDeepSeekReply(
   guildName: string | undefined,
   callerHistory: ConversationMessage[],
   sharedContext: string | null,
+  mode: ReplyMode = "normal",
 ) {
   if (!DEEPSEEK_API_KEY) {
     return "DeepSeek is not configured yet. Add `DEEPSEEK_API_KEY` first, baka.";
@@ -29,7 +46,7 @@ export async function generateDeepSeekReply(
     return "I cannot improvise properly yet. `DeepSeekInstruction.txt` is missing.";
   }
 
-  const prompt = formatUserPrompt(messageContent, userName, guildName);
+  const prompt = formatUserPrompt(messageContent, userName, guildName, mode);
 
   const response = await fetch("https://api.deepseek.com/chat/completions", {
     method: "POST",

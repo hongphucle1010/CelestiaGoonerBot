@@ -38,7 +38,7 @@ const command: Command = {
     const guildName = interaction.guild?.name;
 
     try {
-      const reply = await generateDeepSeekReply(content, userName, guildName, callerHistory, sharedContext);
+      const reply = await generateDeepSeekReply(content, userName, guildName, callerHistory, sharedContext, "styleRewrite");
 
       appendToHistory(historyKey, {
         role: "user",
