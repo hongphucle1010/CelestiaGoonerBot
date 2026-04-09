@@ -3,6 +3,37 @@ import type { ConversationMessage } from "./types/chat";
 
 export type ReplyMode = "normal" | "styleRewrite";
 
+function pickRandom<T>(items: readonly T[]): T {
+  return items[Math.floor(Math.random() * items.length)]!;
+}
+
+function getStyleRewriteVariationInstructions() {
+  const tone = pickRandom([
+    "Tone target: smug tease.",
+    "Tone target: deadpan meme energy.",
+    "Tone target: chaotic gremlin but still elegant.",
+    "Tone target: sleepy sarcasm.",
+    "Tone target: dramatic anime reaction.",
+    "Tone target: playful bully-friend energy.",
+  ] as const);
+
+  const structure = pickRandom([
+    "Structure: one punchy sentence.",
+    "Structure: two short sentences with a strong closer.",
+    "Structure: short setup then a meme-ish twist.",
+    "Structure: question first, then verdict.",
+  ] as const);
+
+  const flavor = pickRandom([
+    "Flavor: use no reaction tags.",
+    "Flavor: optionally use one square-bracket reaction tag.",
+    "Flavor: optionally include one short slang fragment like 'ngl' or 'bro...'.",
+    "Flavor: keep it clean and minimal, no filler.",
+  ] as const);
+
+  return [tone, structure, flavor];
+}
+
 export function formatUserPrompt(messageContent: string, userName: string, guildName: string | undefined, mode: ReplyMode) {
   const base = [
     "Stay fully in character and reply with one short Discord-style message.",
@@ -16,6 +47,8 @@ export function formatUserPrompt(messageContent: string, userName: string, guild
           "Restate the caller's idea in your own style while preserving the core meaning.",
           "Do not narrate about the caller (no 'you said', no 'spreading rumors', no meta commentary).",
           "Do not quote the input verbatim unless it still sounds natural in-character.",
+          "Avoid repeating your common opening patterns; vary cadence and word choice.",
+          ...getStyleRewriteVariationInstructions(),
         ]
       : [];
 
@@ -78,7 +111,7 @@ export async function generateDeepSeekReply(
           content: prompt,
         },
       ],
-      temperature: 1.1,
+      temperature: mode === "styleRewrite" ? 1.35 : 1.1,
       max_tokens: 80,
       stream: false,
     }),
